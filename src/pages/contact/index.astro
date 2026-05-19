@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+---
+<Base title={`Contact ${site.name} | ${site.city}, ${site.state}`} description={`Contact ${site.name} for septic tank pumping, cleaning, and repair in ${site.city}, ${site.state}. Call ${site.phone} or request service online.`}>
+  <section class="service-hero">
+    <div class="container">
+      <h1>Contact {site.name}</h1>
+      <p>Call us or fill out the form below for a free estimate.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <div class="grid-2" style="gap:40px;">
+        <div>
+          <h2 class="section-title">Get In Touch</h2>
+          <div style="margin-top:24px;">
+            <p style="margin-bottom:16px;"><strong>📞 Phone:</strong><br/><a href={`tel:${site.phoneTel}`} style="font-size:1.3rem;font-weight:700;">{site.phone}</a></p>
+            <p style="margin-bottom:16px;"><strong>🕐 Hours:</strong><br/>{site.hours}<br/>{site.hoursNote}</p>
+            <p><strong>📍 Service Area:</strong><br/>{site.locations.map(l => l.name).join(', ')}</p>
+          </div>
+        </div>
+        <div>
+          <h2 class="section-title">Request Service</h2>
+          <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" style="margin-top:24px;">
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-weight:600;margin-bottom:4px;">Name</label>
+              <input type="text" name="name" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:1rem;" />
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-weight:600;margin-bottom:4px;">Phone</label>
+              <input type="tel" name="phone" required style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:1rem;" />
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-weight:600;margin-bottom:4px;">Service Needed</label>
+              <select name="service" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:1rem;">
+                <option>Septic Tank Pumping</option>
+                <option>Septic Tank Cleaning</option>
+                <option>Septic Tank Repair</option>
+                <option>Septic Inspection</option>
+                <option>Emergency Service</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-weight:600;margin-bottom:4px;">Message</label>
+              <textarea name="message" rows="4" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:1rem;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send Request</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

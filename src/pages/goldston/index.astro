@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+
+const slug = Astro.url.pathname.replace(/\//g, '');
+const location = site.locations.find(l => l.slug === slug);
+if (!location) throw new Error(`Location not found: ${slug}`);
+---
+<Base
+  title={`Septic Service in ${location.name}, ${site.state} | ${site.name}`}
+  description={`Professional septic tank pumping, cleaning, and repair in ${location.name}, ${site.state}. Serving ${location.county} County. Call ${site.phone} for a free estimate.`}
+>
+  <section class="location-hero">
+    <div class="container">
+      <h1>Septic Service in {location.name}, {site.state}</h1>
+      <p>Professional septic tank pumping, cleaning, repair, and inspection in {location.name} and {location.county} County.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-content">
+      <p>{location.description}</p>
+
+      <h2>Septic Services Available in {location.name}</h2>
+      <div class="grid-3" style="margin-top:16px;">
+        {site.services.map(s => (
+          <a href={`/${s.slug}/`} class="card" style="text-decoration:none;">
+            <div class="card-icon">{s.icon}</div>
+            <h3>{s.name}</h3>
+            <p>{s.short}</p>
+          </a>
+        ))}
+      </div>
+
+      <h2>Pricing for {location.name} Septic Service</h2>
+      <table class="pricing-table">
+        <thead><tr><th>Service</th><th>Price Range</th></tr></thead>
+        <tbody>
+          {site.pricing.map(p => (
+            <tr><td>{p.service}</td><td class="price">{p.price}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Other Areas We Serve</h2>
+      <div class="grid-4" style="margin-top:16px;">
+        {site.locations.filter(l => l.slug !== slug).map(l => (
+          <a href={`/${l.slug}/`} class="card" style="text-decoration:none;text-align:center;">
+            <h3>📍 {l.name}</h3>
+            <p>{l.county} County</p>
+          </a>
+        ))}
+      </div>
+
+      <h2>Frequently Asked Questions</h2>
+      {site.faqs.slice(0, 4).map(f => (
+        <div class="faq-item">
+          <h3 class="faq-question">{f.question.replace(site.city, location.name)}</h3>
+          <p class="faq-answer">{f.answer}</p>
+        </div>
+      ))}
+
+      <div style="text-align:center;margin-top:40px;">
+        <a href={`tel:${site.phoneTel}`} class="btn btn-primary">📞 Call {site.phone} — Free Estimate</a>
+      </div>
+    </div>
+  </section>
+</Base>

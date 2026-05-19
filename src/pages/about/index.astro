@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+---
+<Base title={`About ${site.name} | Septic Service in ${site.city}, ${site.state}`} description={`Learn about ${site.name}, your trusted septic service provider in ${site.city}, ${site.state}.`}>
+  <section class="service-hero">
+    <div class="container">
+      <h1>About {site.name}</h1>
+      <p>Your trusted septic service provider in {site.city}, {site.state}.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container service-content">
+      <h2>Local Septic Experts Serving {site.county} County</h2>
+      <p>{site.name} provides professional septic services to homeowners and businesses throughout {site.city}, {site.state} and surrounding communities in {site.county}, Chatham, Harnett, and Moore counties.</p>
+      <p>We specialize in septic tank pumping, cleaning, repair, inspection, and 24/7 emergency service. Our experienced technicians handle all types of residential and commercial septic systems, from conventional gravity systems to advanced treatment units.</p>
+      <h2>Why Homeowners Trust Us</h2>
+      <p>We believe in transparent, honest service. That means flat-rate pricing with no hidden fees, clear communication about what your system needs, and professional workmanship on every job. We show up on time, get the work done efficiently, and leave your property clean.</p>
+      <h2>Our Service Area</h2>
+      <p>We proudly serve {site.locations.map(l => l.name).join(', ')}, and all surrounding communities. Whether you're in the heart of {site.city} or in a rural area of {site.county} County, we're here to help with all your septic needs.</p>
+      <h2>Ready to Schedule Service?</h2>
+      <p>Call us today at <a href={`tel:${site.phoneTel}`}>{site.phone}</a> or <a href="/contact/">request service online</a>. We offer free estimates and same-day service when available.</p>
+    </div>
+  </section>
+</Base>

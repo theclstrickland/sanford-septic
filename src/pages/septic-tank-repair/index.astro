@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+
+const slug = Astro.url.pathname.replace(/\//g, '');
+const service = site.services.find(s => s.slug === slug);
+if (!service) throw new Error(`Service not found: ${slug}`);
+
+const otherServices = site.services.filter(s => s.slug !== slug);
+---
+<Base
+  title={`${service.name} in ${site.city}, ${site.state} | ${site.name}`}
+  description={`Professional ${service.name.toLowerCase()} in ${site.city}, ${site.state}. ${service.short} Call ${site.phone} for a free estimate.`}
+>
+  <section class="service-hero">
+    <div class="container">
+      <h1>{service.name} in {site.city}, {site.state}</h1>
+      <p>{service.short}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container service-content">
+      {service.description.split('\n\n').map((p: string) => <p>{p}</p>)}
+
+      <h2>{service.name} Pricing in {site.city}</h2>
+      <table class="pricing-table">
+        <thead><tr><th>Service</th><th>Price Range</th></tr></thead>
+        <tbody>
+          {site.pricing.map(p => (
+            <tr><td>{p.service}</td><td class="price">{p.price}</td></tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Service Areas for {service.name}</h2>
+      <p>We provide {service.name.toLowerCase()} to homeowners and businesses in {site.locations.map(l => l.name).join(', ')}, and surrounding communities throughout {site.county} County.</p>
+
+      <h2>Other Septic Services</h2>
+      <div class="grid-3" style="margin-top:16px;">
+        {otherServices.map(s => (
+          <a href={`/${s.slug}/`} class="card" style="text-decoration:none;">
+            <div class="card-icon">{s.icon}</div>
+            <h3>{s.name}</h3>
+          </a>
+        ))}
+      </div>
+
+      <div style="text-align:center;margin-top:40px;">
+        <a href={`tel:${site.phoneTel}`} class="btn btn-primary">📞 Call {site.phone} — Free Estimate</a>
+      </div>
+    </div>
+  </section>
+</Base>

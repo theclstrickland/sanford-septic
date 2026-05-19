@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: site.faqs.map(f => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+};
+---
+<Base title={`${site.name} | Septic Tank Pumping & Repair in ${site.city}, ${site.state}`} schema={faqSchema}>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Septic Tank Pumping &amp; Repair in {site.city}, {site.state}</h1>
+      <p>{site.description}</p>
+      <div class="hero-phone">
+        <a href={`tel:${site.phoneTel}`}>{site.phone}</a>
+      </div>
+      <div class="hero-btns">
+        <a href={`tel:${site.phoneTel}`} class="btn btn-primary">📞 Call For Free Estimate</a>
+        <a href="/contact/" class="btn btn-white">✉ Request Service Online</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container text-center">
+      <h2 class="section-title">Our Septic Services</h2>
+      <p class="section-subtitle">Complete septic solutions for residential and commercial properties across {site.county} County, {site.state}.</p>
+      <div class="grid-3">
+        {site.services.map(s => (
+          <a href={`/${s.slug}/`} class="card" style="text-decoration:none;">
+            <div class="card-icon">{s.icon}</div>
+            <h3>{s.name}</h3>
+            <p>{s.short}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container text-center">
+      <h2 class="section-title">Transparent Pricing</h2>
+      <p class="section-subtitle">Flat-rate pricing with no hidden fees. Know exactly what you'll pay before we start.</p>
+      <table class="pricing-table">
+        <thead>
+          <tr><th>Service</th><th>Price Range</th></tr>
+        </thead>
+        <tbody>
+          {site.pricing.map(p => (
+            <tr><td>{p.service}</td><td class="price">{p.price}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container text-center">
+      <h2 class="section-title">Why Choose {site.name}?</h2>
+      <div class="grid-4" style="margin-top:32px;">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>Fast Response</h3>
+          <p>Same-day and next-day service available throughout {site.county} County. Emergency service 24/7.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💲</div>
+          <h3>Flat-Rate Pricing</h3>
+          <p>No surprises. We quote a flat rate before any work begins. The price you're quoted is the price you pay.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Licensed &amp; Insured</h3>
+          <p>Fully licensed and insured for your protection. Our technicians are trained and experienced.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌿</div>
+          <h3>Eco-Friendly</h3>
+          <p>We follow all EPA guidelines for waste disposal. Your septic waste is handled responsibly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container text-center">
+      <h2 class="section-title">Service Areas</h2>
+      <p class="section-subtitle">Serving {site.city} and surrounding communities across {site.county}, Chatham, Harnett, and Moore counties.</p>
+      <div class="grid-4">
+        {site.locations.map(l => (
+          <a href={`/${l.slug}/`} class="card" style="text-decoration:none;text-align:center;">
+            <h3>📍 {l.name}</h3>
+            <p>{l.county} County</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <h2 class="section-title text-center">Frequently Asked Questions</h2>
+      <div style="margin-top:32px;">
+        {site.faqs.map(f => (
+          <div class="faq-item">
+            <h3 class="faq-question">{f.question}</h3>
+            <p class="faq-answer">{f.answer}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</Base>

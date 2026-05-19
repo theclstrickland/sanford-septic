@@ -1,0 +1,141 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;
+  schema?: object;
+}
+
+const { title, description = site.description, canonical, schema } = Astro.props;
+const pageUrl = canonical || new URL(Astro.url.pathname, site.url).href;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  url: site.url,
+  telephone: site.phoneTel,
+  description: site.description,
+  areaServed: site.locations.map(l => ({
+    '@type': 'City',
+    name: `${l.name}, ${site.state}`,
+  })),
+  openingHoursSpecification: site.hoursSchema.map(h => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.days.split(','),
+    opens: h.opens,
+    closes: h.closes,
+  })),
+};
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={pageUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.name} />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  <!-- Plausible Analytics -->
+  <script defer data-domain={site.domain} src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand"><span>Sanford</span> Septic Tank</a>
+      <ul class="nav-links">
+        <li class="nav-item">
+          <a href="#">Services</a>
+          <div class="dropdown">
+            {site.services.map(s => (
+              <a href={`/${s.slug}/`}>{s.name}</a>
+            ))}
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="#">Service Areas</a>
+          <div class="dropdown">
+            {site.locations.map(l => (
+              <a href={`/${l.slug}/`}>{l.name}</a>
+            ))}
+          </div>
+        </li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+        <li><a href={`tel:${site.phoneTel}`} class="nav-cta">{site.phone}</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-dropdown').classList.toggle('open')">☰</button>
+    </div>
+    <div class="nav-dropdown">
+      <span class="dropdown-section">Services</span>
+      {site.services.map(s => (
+        <a href={`/${s.slug}/`}>{s.name}</a>
+      ))}
+      <span class="dropdown-section">Service Areas</span>
+      {site.locations.map(l => (
+        <a href={`/${l.slug}/`}>{l.name}</a>
+      ))}
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href={`tel:${site.phoneTel}`} class="nav-cta" style="text-align:center;margin-top:12px;border-radius:8px;padding:12px;">📞 {site.phone}</a>
+    </div>
+  </nav>
+
+  <slot />
+
+  <div class="cta-banner">
+    <div class="container">
+      <h2>Need Septic Service in {site.city}?</h2>
+      <p>Call now for fast, affordable septic tank pumping, cleaning, and repair across {site.county} County.</p>
+      <a href={`tel:${site.phoneTel}`} class="btn btn-primary">{site.phone} — Call Now</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>{site.name}</h4>
+        <p style="font-size:0.9rem;margin-bottom:12px;">{site.description}</p>
+        <p><strong style="color:#fff;">Call:</strong> <a href={`tel:${site.phoneTel}`}>{site.phone}</a></p>
+        <p>{site.hours}</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        {site.services.map(s => (
+          <a href={`/${s.slug}/`}>{s.name}</a>
+        ))}
+      </div>
+      <div>
+        <h4>Service Areas</h4>
+        {site.locations.map(l => (
+          <a href={`/${l.slug}/`}>{l.name}</a>
+        ))}
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="/about/">About Us</a>
+        <a href="/contact/">Contact</a>
+        <a href={`tel:${site.phoneTel}`}>Call {site.phone}</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} {site.name}. All rights reserved. Serving {site.city}, {site.state} and surrounding areas.</p>
+    </div>
+  </footer>
+</body>
+</html>
