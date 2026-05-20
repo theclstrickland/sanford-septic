@@ -203,8 +203,12 @@ a:hover { color: var(--color-primary-dark); }
     linear-gradient(135deg, rgba(14, 58, 32, 0.82) 0%, rgba(45, 106, 79, 0.6) 100%),
     url('/images/hero.jpg') center/cover no-repeat;
   color: #fff;
-  padding: 120px 20px;
+  padding: 40px 20px;
   text-align: center;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .hero h1 {
   font-family: var(--font-heading);
